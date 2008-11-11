@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 
 import unittest
-from truncate_hanzi import truncate_hanzi 
+from truncate_hanzi import truncate_hanzi, len_hanzi
 
 class TruncateHanziTestCase(unittest.TestCase):
     def testChinese(self):
@@ -31,6 +31,25 @@ class TruncateHanziTestCase(unittest.TestCase):
         self.assertEqual(truncate_hanzi('截取段落工具，支持English、Γρεεκ等字母语言和CJK汉字。', 11), u'截取段落工具，支持English、Γρεεκ等...')
         self.assertEqual(truncate_hanzi('截取段落工具，支持English、Γρεεκ等字母语言和CJK汉字。', 10), u'截取段落工具，支持English、Γρεεκ...')
         self.assertEqual(truncate_hanzi('截取段落工具，支持English、Γρεεκ等字母语言和CJK汉字。', 9), u'截取段落工具，支持English...')
+
+    def testNumberMixed(self):
+        self.assertEqual(truncate_hanzi('开始时间: 7月2日 周三 19:00 结束时间: 8月3日 周日 19:00', 9), u'开始时间: 7月2日 周...')
+
+
+class HanziLengthTestCase(unittest.TestCase):
+    def testChinese(self):
+        self.assertEqual(len_hanzi('公共的模'), 4)
+
+    def testEnglish(self):
+        self.assertEqual(len_hanzi('WOW! We Say ENGLISH!!!'), 4)
+
+    def testWestern(self):
+        self.assertEqual(len_hanzi('αέβ Λğ Ґєʯ'), 3)
+
+    def testMixedText(self):
+        self.assertEqual(len_hanzi(' 公 模asdf! hello 你好'), 6)
+        self.assertEqual(len_hanzi('截取段落工具，支持English、Γρεεκ等字母语言和CJK汉字。'), 19)
+
 
 if __name__ == '__main__':
     unittest.main()
